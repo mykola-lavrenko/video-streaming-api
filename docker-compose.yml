@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:15.3
+    container_name: postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: developer_password
+      POSTGRES_DB: video_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    image: openjdk:21-jdk-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: [ "./gradlew", "bootRun" ]
+    container_name: app-service
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/video_db
+      SPRING_DATASOURCE_USERNAME: developer
+      SPRING_DATASOURCE_PASSWORD: developer_password
+    ports:
+      - "8080:8080"
+    restart: always
+
+volumes:
+  postgres_data:

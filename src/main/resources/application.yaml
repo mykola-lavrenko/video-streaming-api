@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: video-streaming-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/video_db
+    username: developer
+    password: developer_password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+
+video-content-storage:
+  location: uploads
+  preview-size: 1MB
+
+server:
+  servlet:
+    context-path: /
